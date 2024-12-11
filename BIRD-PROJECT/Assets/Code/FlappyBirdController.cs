@@ -1,11 +1,11 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using UnityEngine.SceneManagement;
 
-public class FlappyBirdController : MonoBehaviour {
+public class FlappyBirdController : MonoBehaviour
+{
 
     public GameObject Bird;
     public GameObject PipePrefab;
@@ -25,7 +25,8 @@ public class FlappyBirdController : MonoBehaviour {
     private int Score;
 
     // Start is called before the first frame update
-    void Start() {
+    void Start()
+    {
 
         // Code Ref for start and game over text from a youtube video and unity challenge 5
 
@@ -48,14 +49,16 @@ public class FlappyBirdController : MonoBehaviour {
 
     }
 
-    
+
     // Update is called once per frame
-    void Update() {
+    void Update()
+    {
 
         // SMovement
         VerticalSpeed += -Gravity * Time.deltaTime;
 
-        if (Input.GetKeyDown(KeyCode.Space)) {
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
             VerticalSpeed = 0;
             VerticalSpeed += Jump;
         }
@@ -65,7 +68,8 @@ public class FlappyBirdController : MonoBehaviour {
         //  Pipes
         PipeSpawnCountdown -= Time.deltaTime;
 
-        if (PipeSpawnCountdown <= 0) {
+        if (PipeSpawnCountdown <= 0)
+        {
             PipeSpawnCountdown = PipeSpawnInterval;
 
             // create pipe
@@ -81,7 +85,7 @@ public class FlappyBirdController : MonoBehaviour {
         // move pipes left
         PipesHolder.transform.position += Vector3.left * PipesSpeed * Time.deltaTime;
 
-        
+
         // Bird animation
 
         // nose dive
@@ -96,19 +100,23 @@ public class FlappyBirdController : MonoBehaviour {
         WingsRight.transform.localRotation = Quaternion.Euler(Vector3.right * angle);
 
         //  Score
-        foreach (Transform pipe in PipesHolder.transform) {
+        foreach (Transform pipe in PipesHolder.transform)
+        {
 
             // when pipe has passed the bird
-            if (pipe.position.x < 0) {
+            if (pipe.position.x < 0)
+            {
                 int pipeId = int.Parse(pipe.name);
-                if (pipeId > Score) {
+                if (pipeId > Score)
+                {
                     Score = pipeId;
                     ScoreText.text = "SCORE: " + Score.ToString();
                 }
             }
 
             // when pipe is offscreen
-            if (pipe.position.x < -12) {
+            if (pipe.position.x < -12)
+            {
                 Destroy(pipe.gameObject);
             }
         }
@@ -119,21 +127,24 @@ public class FlappyBirdController : MonoBehaviour {
     public void gameOver()
     {
         GameOver.gameObject.SetActive(true);
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
     public void RestartGame()
     {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
 
     }
 
-    private void OnTriggerEnter(Collider collider) {
+    private void OnTriggerEnter(Collider collider)
+    {
 
 
         //  Collision
         Start();
         Destroy(gameObject);
-       if (!gameObject.CompareTag("Bad")) { 
-            gameOver(); }
+        if (!gameObject.CompareTag("Bad"))
+        {
+            gameOver();
+        }
     }
 }
