@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
+using UnityEngine.SceneManagement;
 
 public class FlappyBirdController : MonoBehaviour {
 
@@ -10,6 +12,7 @@ public class FlappyBirdController : MonoBehaviour {
     public GameObject WingsLeft;
     public GameObject WingsRight;
     public Text ScoreText;
+    public TextMeshProUGUI GameOver;
     public float Gravity = 30;
     public float Jump = 10;
     public float PipeSpawnInterval = 2;
@@ -23,6 +26,8 @@ public class FlappyBirdController : MonoBehaviour {
 
     // Start is called before the first frame update
     void Start() {
+
+        // Code Ref for start and game over text from a youtube video and unity challenge 5
 
         // reset score
         Score = 0;
@@ -40,12 +45,14 @@ public class FlappyBirdController : MonoBehaviour {
 
         // reset time
         PipeSpawnCountdown = 0;
+
     }
 
+    
     // Update is called once per frame
     void Update() {
 
-        // STEP 1 - Movement
+        // SMovement
         VerticalSpeed += -Gravity * Time.deltaTime;
 
         if (Input.GetKeyDown(KeyCode.Space)) {
@@ -55,7 +62,7 @@ public class FlappyBirdController : MonoBehaviour {
 
         Bird.transform.position += Vector3.up * VerticalSpeed * Time.deltaTime;
 
-        // STEP 2 - Pipes
+        //  Pipes
         PipeSpawnCountdown -= Time.deltaTime;
 
         if (PipeSpawnCountdown <= 0) {
@@ -74,8 +81,8 @@ public class FlappyBirdController : MonoBehaviour {
         // move pipes left
         PipesHolder.transform.position += Vector3.left * PipesSpeed * Time.deltaTime;
 
-
-        // STEP 4 - Bird animation
+        
+        // Bird animation
 
         // nose dive
         float speedTo01Range = Mathf.InverseLerp(-10, 10, VerticalSpeed);
@@ -88,7 +95,7 @@ public class FlappyBirdController : MonoBehaviour {
         WingsLeft.transform.localRotation = Quaternion.Euler(Vector3.left * angle);
         WingsRight.transform.localRotation = Quaternion.Euler(Vector3.right * angle);
 
-        // STEP 5 - Score
+        //  Score
         foreach (Transform pipe in PipesHolder.transform) {
 
             // when pipe has passed the bird
@@ -105,11 +112,28 @@ public class FlappyBirdController : MonoBehaviour {
                 Destroy(pipe.gameObject);
             }
         }
+
+    }
+
+    // Game over
+    public void gameOver()
+    {
+        GameOver.gameObject.SetActive(true);
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+
+    public void RestartGame()
+    {
+
     }
 
     private void OnTriggerEnter(Collider collider) {
 
-        // STEP 3 - Collision
+
+        //  Collision
         Start();
+        Destroy(gameObject);
+       if (!gameObject.CompareTag("Bad")) { 
+            gameOver(); }
     }
 }
