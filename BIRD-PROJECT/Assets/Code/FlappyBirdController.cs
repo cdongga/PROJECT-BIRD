@@ -13,6 +13,7 @@ public class FlappyBirdController : MonoBehaviour
     public GameObject WingsRight;
     public Text ScoreText;
     public TextMeshProUGUI GameOver;
+
     public float Gravity = 30;
     public float Jump = 10;
     public float PipeSpawnInterval = 2;
@@ -57,7 +58,7 @@ public class FlappyBirdController : MonoBehaviour
         // SMovement
         VerticalSpeed += -Gravity * Time.deltaTime;
 
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.UpArrow))
         {
             VerticalSpeed = 0;
             VerticalSpeed += Jump;
@@ -80,7 +81,11 @@ public class FlappyBirdController : MonoBehaviour
             // pipe position
             pipe.transform.position += Vector3.right * 12;
             pipe.transform.position += Vector3.up * Mathf.Lerp(4, 9, Random.value);
+
+           
+
         }
+
 
         // move pipes left
         PipesHolder.transform.position += Vector3.left * PipesSpeed * Time.deltaTime;
@@ -147,4 +152,4 @@ public class FlappyBirdController : MonoBehaviour
             gameOver();
         }
     }
-}
+} 
